@@ -11,43 +11,34 @@
   <script type="module">
     // Your access token can be found at: https://ion.cesium.com/tokens.
     // This is the default access token from your ion account
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmZDJlYjBhZi04NGJlLTRiZTAtOTk5Ny02NjU2ZDUwNjdkZmYiLCJpZCI6Mjg3MjI0LCJpYXQiOjE3NDI4MzI5ODl9.mnbcMRUBjOiFCWWkFoAqOZ_D9MwgfvnnM_9eQLz4uic";
 
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmZDJlYjBhZi04NGJlLTRiZTAtOTk5Ny02NjU2ZDUwNjdkZmYiLCJpZCI6Mjg3MjI0LCJpYXQiOjE3NDI4MzI5ODl9.mnbcMRUBjOiFCWWkFoAqOZ_D9MwgfvnnM_9eQLz4uic';
-
-    // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: Cesium.Terrain.fromWorldTerrain(),
-    });
-
-const tileset = viewer.scene.primitives.add(
-  await Cesium.Cesium3DTileset.fromIonAssetId(3268184),
-);
-
-const scene = viewer.scene;
-scene.globe.show = true;
-scene.primitives.add(tileset);
-viewer.scene.primitives.add(tileset);
-  await viewer.zoomTo(tileset);
-    
-// Fly to the tileset view (adjust as needed)
-//viewer.scene.camera.flyTo({
-destination: new Cesium.Cartesian3(
--4917226.366449788,
-2493062.5206136876,
--3211827.401696277
-),
-orientation: {
-heading: 5.955336480101823,
-pitch: -0.6501749902588689,
-roll: 0.00018349188206112643,
-},
-duration: 0,
-easingFunction: Cesium.EasingFunction.LINEAR_NONE,
+const viewer = new Cesium.Viewer("cesiumContainer", {
+  terrainProvider: await Cesium.CesiumTerrainProvider.fromIonAssetId(
+    1,
+  ),
 });
-   
-    // Add Cesium OSM Buildings, a global 3D buildings layer.
-    const buildingTileset = await Cesium.createOsmBuildingsAsync();
-    viewer.scene.primitives.add(buildingTileset); 
+viewer.scene.globe.depthTestAgainstTerrain = true;
+
+try {
+  const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(3268184);
+  viewer.scene.primitives.add(tileset);
+  await viewer.zoomTo(tileset);
+
+  // Apply the default style if it exists
+  const extras = tileset.asset.extras;
+  if (
+    Cesium.defined(extras) &&
+    Cesium.defined(extras.ion) &&
+    Cesium.defined(extras.ion.defaultStyle)
+  ) {
+    tileset.style = new Cesium.Cesium3DTileStyle(extras.ion.defaultStyle);
+  }
+} catch (error) {
+  console.log(error);
+}
+
+  
  
   </script>
  </div>
