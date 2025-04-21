@@ -20,7 +20,7 @@
     });
 
 const tileset = viewer.scene.primitives.add(
-  await Cesium.Cesium3DTileset.fromIonAssetId(3268161),
+  await Cesium.Cesium3DTileset.fromIonAssetId(3268184),
 );
 
 const scene = viewer.scene;
@@ -28,7 +28,7 @@ scene.globe.show = true;
 scene.primitives.add(tileset);
 
 // Fly to the tileset view (adjust as needed)
-viewer.scene.camera.flyTo({
+//viewer.scene.camera.flyTo({
 destination: new Cesium.Cartesian3(
 -4917226.366449788,
 2493062.5206136876,
