@@ -26,7 +26,9 @@ const tileset = viewer.scene.primitives.add(
 const scene = viewer.scene;
 scene.globe.show = true;
 scene.primitives.add(tileset);
-
+viewer.scene.primitives.add(tileset);
+  await viewer.zoomTo(tileset);
+    
 // Fly to the tileset view (adjust as needed)
 //viewer.scene.camera.flyTo({
 destination: new Cesium.Cartesian3(
